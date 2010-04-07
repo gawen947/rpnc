@@ -16,3 +16,8 @@ Example:
 Results are printed to standard output. Intermediate results could be shown with
 the "=" operator. The program return the number of elements (operators and values) 
 left into the stack. If the whole expression has been evaluated it returns zero.
+
+TODOs:
+	- operator list in README
+	- operator list from help inside gcalc
+	- show commit in version
