@@ -26,11 +26,6 @@
 #define PACKAGE      "gcalc"
 #define PRECISION    "12"
 
-/* TODO:
-   fix pi (or try)
-   fix return value
-*/
-
 struct lifo
 {
   int index;
