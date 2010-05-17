@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-02-17 01:51:26 gawen>
+   Time-stamp: <2010-05-18 01:51:01 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -226,11 +226,13 @@ static double opr_log10(struct lifo * stack)
   return log10(op);
 }
 
+#ifndef __FreeBSD__
 static double opr_log2(struct lifo * stack)
 {
   double op = pop(stack);
   return log2(op);
 }
+#endif /* __FreeBSD__ */
 
 static double opr_logb(struct lifo * stack)
 {
@@ -415,7 +417,9 @@ static double pop(struct lifo *stack)
       {"expm1",opr_expm1},
       {"log",opr_log},
       {"log10",opr_log10},
+#ifndef __FreeBSD__
       {"log2",opr_log2},
+#endif /* __FreeBSD__ */
       {"logb",opr_logb},
       {"log1p",opr_log1p},
       {"abs",opr_abs},
