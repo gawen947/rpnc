@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-05-18 01:51:01 gawen>
+   Time-stamp: <2010-06-21 01:00:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -20,11 +20,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
 #include <math.h>
 
 #define VERSION      "0.3-git"
 #define PACKAGE      "gcalc"
 #define PRECISION    "12"
+
+#ifndef M_PI
+#define M_PI 3.141592653589793238462643
+#endif /* M_PI */
 
 struct lifo
 {
@@ -365,7 +370,7 @@ static double opr_ninf(struct lifo *stack)
 
 static double opr_version(struct lifo * stack)
 {
-  printf(PACKAGE " " VERSION "\n");
+  printf(PACKAGE " " VERSION " (commit:" COMMIT ")\n");
   exit(stack->index);
   return NAN;
 }
