@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-06-21 02:18:39 gawen>
+   Time-stamp: <2010-06-21 02:33:12 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -25,6 +25,11 @@
 
 #define VERSION      "0.3-git"
 #define PACKAGE      "gcalc"
+
+#ifndef COMMIT
+#define COMMIT       "(unknown)"
+#endif /* COMMIT */
+
 #define PRECISION    "12"
 
 #ifndef M_PI
