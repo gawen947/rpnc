@@ -19,4 +19,3 @@ left into the stack. If the whole expression has been evaluated it returns zero.
 
 TODOs:
 	- operator list in README
-	- operator list from help inside gcalc

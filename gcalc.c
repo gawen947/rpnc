@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-06-21 01:00:39 gawen>
+   Time-stamp: <2010-06-21 02:18:39 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -40,12 +40,14 @@ struct lifo
 struct operator
 {
   const char *name;
+  const char *help;
   double (*func)(struct lifo *);
 };
 
 static double pop(struct lifo * stack);
 static void show(double x);
 static bool isfloat(const char * str);
+static void operators(const struct operator * ops);
 
 /* BEGINNING of operator definition*/
 static double opr_add(struct lifo * stack)
@@ -377,7 +379,7 @@ static double opr_version(struct lifo * stack)
 
 static double opr_help(struct lifo * stack)
 {
-  printf("Usage: " PACKAGE " [OPERATORS]\n");
+  printf("Usage: " PACKAGE " [operators]\n");
   exit(stack->index);
   return NAN;
 }
@@ -390,70 +392,72 @@ static double pop(struct lifo *stack)
   const struct operator ops[] =
     {
       /* binary */
-      {"+",opr_add},
-      {"-",opr_sub},
-      {"*",opr_prd},
-      {".",opr_prd},
-      {"/",opr_div},
-      {"^",opr_pow},
-      {"**",opr_pow},
-      {"pow",opr_pow},
-      {"atan2",opr_atan2},
-      {"hypot",opr_hypot},
-      {"mod",opr_mod},
+      {"+","Addition",opr_add},
+      {"-","Substraction",opr_sub},
+      {"*","Multiplication",opr_prd},
+      {".","Multiplication",opr_prd},
+      {"/","Division",opr_div},
+      {"^","Raise to a power",opr_pow},
+      {"**","Raise to a power",opr_pow},
+      {"pow","Raise to a power",opr_pow},
+      {"atan2","Inverse tangent of a quotient",opr_atan2},
+      {"hypot","Hypotenuse by the Pythagorean formula",opr_hypot},
+      {"mod","Modulo operation",opr_mod},
       /* unary */
-      {"inv",opr_inv},
-      {"sqrt",opr_sqrt},
-      {"cbrt",opr_cbrt},
-      {"sin",opr_sin},
-      {"cos",opr_cos},
-      {"tan",opr_tan},
-      {"asin",opr_asin},
-      {"acos",opr_acos},
-      {"atan",opr_atan},
-      {"sinh",opr_sinh},
-      {"cosh",opr_cosh},
-      {"tanh",opr_tanh},
-      {"asinh",opr_asinh},
-      {"acosh",opr_acosh},
-      {"atanh",opr_atanh},
-      {"exp",opr_exp},
-      {"exp2",opr_exp2},
-      {"expm1",opr_expm1},
-      {"log",opr_log},
-      {"log10",opr_log10},
+      {"inv","Multiplicative inverse",opr_inv},
+      {"sqrt","Square root",opr_sqrt},
+      {"cbrt","Cube root",opr_cbrt},
+      {"sin","Sinus of a radian angle",opr_sin},
+      {"cos","Cosine of a radian angle",opr_cos},
+      {"tan","Tangent of a radian angle",opr_tan},
+      {"asin","Inverse sine in radians",opr_asin},
+      {"acos","Inverse cosine in radians",opr_acos},
+      {"atan","Inverse tangent in radians",opr_atan},
+      {"sinh","Hyperbolic sine",opr_sinh},
+      {"cosh","Hyperbolic cosine",opr_cosh},
+      {"tanh","Hyperbolic tangent",opr_tanh},
+      {"asinh","Inverse hyperbolic sine",opr_asinh},
+      {"acosh","Inverse hyperbolic cosine",opr_acosh},
+      {"atanh","Inverse hyperbolic tangent",opr_atanh},
+      {"exp","Natural exponential",opr_exp},
+      {"exp2","Base two exponential",opr_exp2},
+      {"expm1","Natural exponential minus one",opr_expm1},
+      {"log","Natural logarithm",opr_log},
+      {"log10","Base-10 logarithm",opr_log10},
 #ifndef __FreeBSD__
-      {"log2",opr_log2},
+      {"log2","Base two logarithm",opr_log2},
 #endif /* __FreeBSD__ */
-      {"logb",opr_logb},
-      {"log1p",opr_log1p},
-      {"abs",opr_abs},
-      {"erf",opr_erf},
-      {"erfc",opr_erfc},
-      {"lgamma",opr_lgamma},
-      {"tgamma",opr_tgamma},
-      {"=",opr_show},
+      {"logb","Obtains the exponent",opr_logb},
+      {"log1p","Add the natural logarithm of one",opr_log1p},
+      {"abs","Absolute value",opr_abs},
+      {"erf","Error function",opr_erf},
+      {"erfc","Complementary error function",opr_erfc},
+      {"lgamma","Natural logarithm of the absolute value of the gamma function",
+       opr_lgamma},
+      {"tgamma","True gamma function",opr_tgamma},
+      {"=","Show intermediate results",opr_show},
       /* void */
-      {"pi",opr_pi},
-      {"c",opr_c},
-      {"e",opr_e},
-      {"me",opr_me},
-      {"mp",opr_mp},
-      {"G",opr_G},
-      {"g",opr_g},
-      {"h",opr_h},
-      {"hbar",opr_hbar},
-      {"eps0",opr_eps0},
-      {"mu0",opr_mu0},
-      {"NA",opr_NA},
-      {"stdT",opr_stdT},
-      {"stdP",opr_stdP},
-      {"INF",opr_inf},
-      {"+INF",opr_inf},
-      {"-INF",opr_ninf},
-      {"version",opr_version},
-      {"help",opr_help},
-      {NULL,NULL}
+      {"pi","Pi constant",opr_pi},
+      {"c","Speed of light (m/s)",opr_c},
+      {"e","Electron charge (C)",opr_e},
+      {"me","Electron mass (kg)",opr_me},
+      {"mp","Proton mass (kg)",opr_mp},
+      {"G","Gravitational constant (N.m^2/kg^2)",opr_G},
+      {"g","Standard gravity (m/s^2)",opr_g},
+      {"h","Planck constant (J.s)",opr_h},
+      {"hbar","Dirac constant (J.s)",opr_hbar},
+      {"eps0","Vacuum permittivity (F/m)",opr_eps0},
+      {"mu0","Vacuum permeability (H/m)",opr_mu0},
+      {"NA","Avogadro constant (mol^-1)",opr_NA},
+      {"stdT","Standard temperature (K)",opr_stdT},
+      {"stdP","Standard pression (Pa)",opr_stdP},
+      {"INF","Infinity",opr_inf},
+      {"+INF","Infinity",opr_inf},
+      {"-INF","Minus infinity",opr_ninf},
+      {"version","Display version",opr_version},
+      {"help","Display usage",opr_help},
+      {"operators","Display operators",NULL},
+      {NULL,NULL,NULL}
     };
 
   if(!stack->index) {
@@ -461,6 +465,10 @@ static double pop(struct lifo *stack)
     exit(stack->index);
   }
   operator = stack->stk[stack->index--];
+  if(!strcmp(operator,"operators")) {
+    operators(ops);
+    exit(stack->index);
+  }
   for(i = ops ; i->name ; i++)
     if(!strcmp(operator,i->name))
       return i->func(stack);
@@ -496,6 +504,26 @@ static bool isfloat(const char * str)
   if(dots > 1)
     return false;
   return true;
+}
+
+static void operators(const struct operator * ops)
+{
+  int max,size;
+  const struct operator *i;
+
+  max = 0;
+  for(i = ops ; i->name ; i++) {
+    size = strlen(i->name);
+    if(size > max)
+      max = size;
+  }
+  for(i = ops ; i->name ; i++) {
+    size = strlen(i->name);
+    printf("%s",i->name);
+    for(; size < max ; size++)
+      printf(" ");
+    printf(" %s\n",i->help);
+  }
 }
 
 int main(int argc, const char *argv[])
