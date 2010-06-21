@@ -2,20 +2,79 @@
 | A basic RPN calculator from command line |
 +==========================================+
 
-Everything is passed from the command line. There isn't any interactive mode. 
+Everything is passed from the command line. There isn't any interactive mode.
 This calculator use Reverse Polish Notation (see http://en.wikipedia.org/wiki/Reverse_Polish_Notation for details).
 
 Example:
-	Consider the following infix expression : 
-		5 + (3 * 4) / 6 - 2
-	This could be evaluated with gcalc using those arguments :
-		gcalc 5 3 4 * 6 / 2 - +
-	In order to avoid the shell expander another option is :
-		gcalc 5 3 4 . 6 / 2 - +
+        Consider the following infix expression :
+                 5 + (3 * 4) / 6 - 2
+        This could be evaluated with gcalc using those arguments :
+                gcalc 5 3 4 * 6 / 2 - +
+        In order to avoid the shell expander another option is :
+                gcalc 5 3 4 . 6 / 2 - +
 
 Results are printed to standard output. Intermediate results could be shown with
-the "=" operator. The program return the number of elements (operators and values) 
+the "=" operator. The program return the number of elements (operators and values)
 left into the stack. If the whole expression has been evaluated it returns zero.
 
-TODOs:
-	- operator list in README
+The operators list follows :
+    +         Addition
+    -         Substraction
+    *         Multiplication
+    .         Multiplication
+    /         Division
+    ^         Raise to a power
+    **        Raise to a power
+    pow       Raise to a power
+    atan2     Inverse tangent of a quotient
+    hypot     Hypotenuse by the Pythagorean formula
+    mod       Modulo operation
+    inv       Multiplicative inverse
+    sqrt      Square root
+    cbrt      Cube root
+    sin       Sinus of a radian angle
+    cos       Cosine of a radian angle
+    tan       Tangent of a radian angle
+    asin      Inverse sine in radians
+    acos      Inverse cosine in radians
+    atan      Inverse tangent in radians
+    sinh      Hyperbolic sine
+    cosh      Hyperbolic cosine
+    tanh      Hyperbolic tangent
+    asinh     Inverse hyperbolic sine
+    acosh     Inverse hyperbolic cosine
+    atanh     Inverse hyperbolic tangent
+    exp       Natural exponential
+    exp2      Base two exponential
+    expm1     Natural exponential minus one
+    log       Natural logarithm
+    log10     Base-10 logarithm
+    log2      Base two logarithm
+    logb      Obtains the exponent
+    log1p     Add the natural logarithm of one
+    abs       Absolute value
+    erf       Error function
+    erfc      Complementary error function
+    lgamma    Natural logarithm of the absolute value of the gamma function
+    tgamma    True gamma function
+    =         Show intermediate results
+    pi        Pi constant
+    c         Speed of light (m/s)
+    e         Electron charge (C)
+    me        Electron mass (kg)
+    mp        Proton mass (kg)
+    G         Gravitational constant (N.m^2/kg^2)
+    g         Standard gravity (m/s^2)
+    h         Planck constant (J.s)
+    hbar      Dirac constant (J.s)
+    eps0      Vacuum permittivity (F/m)
+    mu0       Vacuum permeability (H/m)
+    NA        Avogadro constant (mol^-1)
+    stdT      Standard temperature (K)
+    stdP      Standard pression (Pa)
+    INF       Infinity
+    +INF      Infinity
+    -INF      Minus infinity
+    version   Display version
+    help      Display usage
+    operators Display operators
