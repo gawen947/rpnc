@@ -78,3 +78,6 @@ The operators list follows :
     version   Display version
     help      Display usage
     operators Display operators
+
+TODOs:
+    - check domain error
