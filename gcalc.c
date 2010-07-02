@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-07-02 22:22:35 gawen>
+   Time-stamp: <2010-07-02 22:39:13 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <sysexits.h>
+#include <err.h>
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
@@ -542,7 +544,7 @@ static void operators(const struct operator * ops)
 int main(int argc, const char *argv[])
 {
   if(argc > STACK_LIMIT)
-    errx("stack is too large");
+    errx(EX_SOFTWARE,"stack is too large");
   struct lifo stack = { --argc, argv };
   show(pop(&stack));
   exit(stack.index);
