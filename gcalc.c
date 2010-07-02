@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-06-21 02:33:12 gawen>
+   Time-stamp: <2010-07-02 22:22:35 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -23,6 +23,8 @@
 #include <ctype.h>
 #include <math.h>
 
+#include <limits.h>
+
 #define VERSION      "0.3-git"
 #define PACKAGE      "gcalc"
 
@@ -31,6 +33,12 @@
 #endif /* COMMIT */
 
 #define PRECISION    "12"
+
+#ifdef ARG_MAX
+#define STACK_LIMIT ARG_MAX
+#else
+#define STACK_LIMIT 4096
+#endif
 
 #ifndef M_PI
 #define M_PI 3.141592653589793238462643
@@ -533,6 +541,8 @@ static void operators(const struct operator * ops)
 
 int main(int argc, const char *argv[])
 {
+  if(argc > STACK_LIMIT)
+    errx("stack is too large");
   struct lifo stack = { --argc, argv };
   show(pop(&stack));
   exit(stack.index);
