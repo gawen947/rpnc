@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-12-01 16:19:00 gawen>
+   Time-stamp: <2010-12-01 16:21:26 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -478,7 +478,7 @@ static double pop(struct lifo *stack)
     };
 
   if(!stack->index)
-    errx(stack->index, "syntax error : Empty stack");
+    errx(stack->index, "syntax error: Empty stack");
   operator = stack->stk[stack->index--];
   if(!strcmp(operator,"operators")) {
     operators(ops);
