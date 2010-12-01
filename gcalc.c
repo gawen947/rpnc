@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-12-01 15:54:30 gawen>
+   Time-stamp: <2010-12-01 16:19:00 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -30,21 +30,22 @@
 
 #define VERSION      "0.3-git"
 #define PACKAGE      "gcalc"
-
 #ifndef COMMIT
-#define COMMIT       "(unknown)"
+# define PACKAGE_VERSION VERSION
+#else
+# define PACKAGE_VERSION VERSION " (commit:" COMMIT ")"
 #endif /* COMMIT */
 
 #define PRECISION    "12"
 
 #ifdef ARG_MAX
-#define STACK_LIMIT ARG_MAX
+# define STACK_LIMIT ARG_MAX
 #else
-#define STACK_LIMIT 4096
+# define STACK_LIMIT 4096
 #endif
 
 #ifndef M_PI
-#define M_PI 3.141592653589793238462643
+# define M_PI 3.141592653589793238462643
 #endif /* M_PI */
 
 struct lifo
@@ -388,7 +389,7 @@ static double opr_ninf(struct lifo *stack)
 
 static double opr_version(struct lifo * stack)
 {
-  printf(PACKAGE " " VERSION " (commit:" COMMIT ")\n");
+  printf(PACKAGE " " PACKAGE_VERSION "\n");
   exit(stack->index);
   return NAN;
 }
@@ -476,10 +477,8 @@ static double pop(struct lifo *stack)
       {NULL,NULL,NULL}
     };
 
-  if(!stack->index) {
-    fprintf(stderr,"Syntax error : empty stack\n");
-    exit(stack->index);
-  }
+  if(!stack->index)
+    errx(stack->index, "syntax error : Empty stack");
   operator = stack->stk[stack->index--];
   if(!strcmp(operator,"operators")) {
     operators(ops);
@@ -487,6 +486,7 @@ static double pop(struct lifo *stack)
   }
   for(i = ops ; i->name ; i++) {
     if(!strcmp(operator,i->name)) {
+      int raised;
       double res;
 
       errno = 0;
@@ -494,22 +494,21 @@ static double pop(struct lifo *stack)
 
       res = i->func(stack);
 
-      if(errno || fetestexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW)) {
+      raised = fetestexcept(FE_INVALID | FE_DIVBYZERO |
+                            FE_OVERFLOW | FE_UNDERFLOW);
+      if(raised || errno) {
         const char *msg;
-
-        if(fetestexcept(FE_INVALID))
-          msg = "Undetermined";
-        else if(fetestexcept(FE_DIVBYZERO))
+        if(errno)
+          err(stack->index, "math error with ‘%s’", operator);
+        else if(raised & FE_INVALID)
+          msg = "Invalid operation";
+        else if(raised & FE_DIVBYZERO)
           msg = "Division by zero";
-        else if(fetestexcept(FE_OVERFLOW))
-          msg = "Overflow";
-        else if(fetestexcept(FE_UNDERFLOW))
-          msg = "Underflow";
-        else
-          err(stack->index + 1, "at index %d with %s, math error",
-              stack->index, operator);
-        errx(stack->index + 1, "at index %d with %s, math error : %s",
-             stack->index, operator, msg);
+        else if(raised & FE_OVERFLOW)
+          msg = "Result not representable due to underflow";
+        else if(raised & FE_UNDERFLOW)
+          msg = "Result not representable due to overflow";
+        errx(stack->index, "math error with ‘%s’: %s", operator, msg);
       }
 
       return res;
@@ -517,7 +516,7 @@ static double pop(struct lifo *stack)
   }
   if(isfloat(operator))
      return atof(operator);
-  fprintf(stderr,"This operator \"%s\" does not exists valids are :\n",
+  fprintf(stderr,"This operator ‘%s’ does not exists valids are:\n",
           operator);
   for(i = ops ; i->name ; i++)
     fprintf(stderr,"  %s",i->name);
