@@ -1,28 +1,44 @@
-CC=gcc
-RM=rm -f
-INSTALL=install
-SRC=gcalc.c
-COMMIT=$(shell ./hash.sh)
-CFLAGS=-std=c99 -O2
-LIBS=-lm
-PREF=/usr/local/
-BIN=$(PREF)bin/
+include commands.mk
 
-all: gcalc strip
+CFLAGS  := -std=c99 -O2 -fPIC -Wall
+LDFLAGS := -lm 
 
-gcalc: $(SRC)
-	@echo -n COMPILING
-	@$(CC) $(LIBS) -DCOMMIT="\"$(COMMIT)\"" $(CFLAGS) $^ -o $@
-	@echo ... done.
-.PHONY : clean install
+SRC  = $(wildcard *.c)
+OBJ  = $(foreach obj, $(SRC:.c=.o), $(notdir $(obj)))
+DEP  = $(SRC:.c=.d)
+
+PREFIX  ?= /usr/local
+BINDIR  ?= $(PREFIX)/bin
+
+ifdef DEBUG
+CFLAGS += -ggdb
+endif
+
+commit = $(shell ./hash.sh)
+ifneq ($(commit), UNKNOWN)
+CFLAGS += -DCOMMIT="\"$(commit)\""
+endif
+
+.PHONY: all clean
+
+all: gcalc
+
+gcalc: $(OBJ)
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) -Wp,-MMD,$*.d -c $(CFLAGS) -o $@ $< 
 
 clean:
-	$(RM) $(OBJ) gcalc
+	$(RM) $(DEP)
+	$(RM) $(OBJ)
+	$(RM) gcalc
 
-strip:
-	@echo -n STRIPING
-	@strip gcalc
-	@echo ... done.
+install: gcalc
+	$(INSTALL_PROGRAM) gcalc $(BINDIR)
 
-install:
-	$(INSTALL) gcalc $(BIN)
+uninstall:
+	$(RM) $(BINDIR)/gcalc
+
+-include $(DEP)
+
