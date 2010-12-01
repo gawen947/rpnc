@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-12-01 16:28:05 gawen>
+   Time-stamp: <2010-12-01 19:38:46 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -28,7 +28,7 @@
 #include <fenv.h>
 #include <err.h>
 
-#define VERSION      "0.3-git"
+#define VERSION      "0.3"
 #define PACKAGE      "gcalc"
 #ifndef COMMIT
 # define PACKAGE_VERSION VERSION

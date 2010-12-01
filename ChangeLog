@@ -1,3 +1,11 @@
+* Wen Dec 01 2010 David Hauweele <david.hauweele@gmail.com>
+  - Works with FreeBSD
+  - Displays commit when needed
+  - Displays the list of operators
+  - Adds a limit to the size of the stack
+  - Catch floating point exceptions
+  - Release 0.3
+
 * Tue Feb 16 2010 David Hauweele <david.hauweele@gmail.com>
   - Reverse Polish Notation
   - Added some constants
