@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-12-01 16:21:26 gawen>
+   Time-stamp: <2010-12-01 16:28:05 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -497,7 +497,7 @@ static double pop(struct lifo *stack)
       raised = fetestexcept(FE_INVALID | FE_DIVBYZERO |
                             FE_OVERFLOW | FE_UNDERFLOW);
       if(raised || errno) {
-        const char *msg;
+        const char *msg = NULL;
         if(errno)
           err(stack->index, "math error with ‘%s’", operator);
         else if(raised & FE_INVALID)
