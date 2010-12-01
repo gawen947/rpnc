@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-07-02 22:39:13 gawen>
+   Time-stamp: <2010-12-01 15:54:30 gawen>
 
    Copyright (C) 2010 David Hauweele <david.hauweele@gmail.com>
 
@@ -16,16 +16,17 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <sysexits.h>
-#include <err.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <limits.h>
 #include <string.h>
+#include <stdio.h>
+#include <errno.h>
 #include <ctype.h>
 #include <math.h>
-
-#include <limits.h>
+#include <fenv.h>
+#include <err.h>
 
 #define VERSION      "0.3-git"
 #define PACKAGE      "gcalc"
@@ -484,9 +485,36 @@ static double pop(struct lifo *stack)
     operators(ops);
     exit(stack->index);
   }
-  for(i = ops ; i->name ; i++)
-    if(!strcmp(operator,i->name))
-      return i->func(stack);
+  for(i = ops ; i->name ; i++) {
+    if(!strcmp(operator,i->name)) {
+      double res;
+
+      errno = 0;
+      feclearexcept(FE_ALL_EXCEPT);
+
+      res = i->func(stack);
+
+      if(errno || fetestexcept(FE_INVALID | FE_DIVBYZERO | FE_OVERFLOW | FE_UNDERFLOW)) {
+        const char *msg;
+
+        if(fetestexcept(FE_INVALID))
+          msg = "Undetermined";
+        else if(fetestexcept(FE_DIVBYZERO))
+          msg = "Division by zero";
+        else if(fetestexcept(FE_OVERFLOW))
+          msg = "Overflow";
+        else if(fetestexcept(FE_UNDERFLOW))
+          msg = "Underflow";
+        else
+          err(stack->index + 1, "at index %d with %s, math error",
+              stack->index, operator);
+        errx(stack->index + 1, "at index %d with %s, math error : %s",
+             stack->index, operator, msg);
+      }
+
+      return res;
+    }
+  }
   if(isfloat(operator))
      return atof(operator);
   fprintf(stderr,"This operator \"%s\" does not exists valids are :\n",
