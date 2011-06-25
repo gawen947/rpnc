@@ -1,4 +1,4 @@
-* Wen Dec 01 2010 David Hauweele <david.hauweele@gmail.com>
+* Wen Dec 01 2010 David Hauweele <david@hauweele.net>
   - Works with FreeBSD
   - Displays commit when needed
   - Displays the list of operators
@@ -6,10 +6,10 @@
   - Catch floating point exceptions
   - Release 0.3
 
-* Tue Feb 16 2010 David Hauweele <david.hauweele@gmail.com>
+* Tue Feb 16 2010 David Hauweele <david@hauweele.net>
   - Reverse Polish Notation
   - Added some constants
   - Release 0.2
 
-* Sat Feb 10 2010 David Hauweele <david.hauweele@gmail.com>
+* Sat Feb 10 2010 David Hauweele <david@hauweele.net>
   - Release 0.1
