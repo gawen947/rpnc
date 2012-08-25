@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2012-08-25 17:53:52 gawen>
+   Time-stamp: <2012-08-25 21:08:34 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
 
@@ -416,6 +416,7 @@ static double pop(struct lifo *stack)
       {"/","Division",opr_div},
       {"^","Raise to a power",opr_pow},
       {"**","Raise to a power",opr_pow},
+      {"..","Raise to a power",opr_pow},
       {"pow","Raise to a power",opr_pow},
       {"atan2","Inverse tangent of a quotient",opr_atan2},
       {"hypot","Hypotenuse by the Pythagorean formula",opr_hypot},
