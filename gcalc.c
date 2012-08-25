@@ -1,5 +1,5 @@
 /* File: gcalc.c
-   Time-stamp: <2010-12-01 19:38:46 gawen>
+   Time-stamp: <2012-08-25 17:53:52 gawen>
 
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
 
@@ -538,8 +538,9 @@ static bool isfloat(const char * str)
   while(*str) {
     if(*str == '.')
       dots++;
-    /* TODO: fix E/e position */
-    else if(!isdigit(*str) && *str != 'E' && *str != 'e')
+    /* TODO: fix E/e/+/- position */
+    else if(!isdigit(*str) && *str != 'E' && *str != 'e' && \
+            *str != '+' && *str != '-')
       return false;
     str++;
   }
