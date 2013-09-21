@@ -1,6 +1,4 @@
 /* File: gcalc.c
-   Time-stamp: <2012-08-25 21:08:34 gawen>
-
    Copyright (C) 2010 David Hauweele <david@hauweele.net>
 
    This program is free software; you can redistribute it and/or modify
