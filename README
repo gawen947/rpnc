@@ -8,10 +8,10 @@ This calculator use Reverse Polish Notation (see http://en.wikipedia.org/wiki/Re
 Example:
         Consider the following infix expression :
                  5 + (3 * 4) / 6 - 2
-        This could be evaluated with gcalc using those arguments :
-                gcalc 5 3 4 * 6 / 2 - +
+        This could be evaluated with rpnc using those arguments :
+                rpnc 5 3 4 * 6 / 2 - +
         In order to avoid the shell expander another option is :
-                gcalc 5 3 4 . 6 / 2 - +
+                rpnc 5 3 4 . 6 / 2 - +
 
 Results are printed to standard output. Intermediate results could be shown with
 the "=" operator. The program return the number of elements (operators and values)

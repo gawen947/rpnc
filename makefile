@@ -21,9 +21,9 @@ endif
 
 .PHONY: all clean
 
-all: gcalc
+all: rpnc
 
-gcalc: $(OBJ)
+rpnc: $(OBJ)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 %.o: %.c
@@ -32,13 +32,13 @@ gcalc: $(OBJ)
 clean:
 	$(RM) $(DEP)
 	$(RM) $(OBJ)
-	$(RM) gcalc
+	$(RM) rpnc
 
-install: gcalc
-	$(INSTALL_PROGRAM) gcalc $(BINDIR)
+install: rpnc
+	$(INSTALL_PROGRAM) rpnc $(BINDIR)
 
 uninstall:
-	$(RM) $(BINDIR)/gcalc
+	$(RM) $(BINDIR)/rpnc
 
 -include $(DEP)
 

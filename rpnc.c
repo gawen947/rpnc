@@ -35,7 +35,7 @@
 #include <err.h>
 
 #define VERSION      "0.3"
-#define PACKAGE      "gcalc"
+#define PACKAGE      "rpnc"
 #ifndef COMMIT
 # define PACKAGE_VERSION VERSION
 #else
